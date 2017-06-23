@@ -23,11 +23,10 @@ public class Line extends StateMachineBase {
 	}
 	
 	public void setState(int s) {
-		switch (state) {
+		switch (s) {
 		case DRIVING:
 			
 			startTime = Timer.getFPGATimestamp();
-			finishTime = mp.totalTime();
 			
 		}
 		
@@ -39,12 +38,10 @@ public class Line extends StateMachineBase {
 		case DRIVING:
 			
 			t = Timer.getFPGATimestamp() - startTime;
-			leftSpeed = mp.getVelocity(t);
-			rightSpeed = mp.getVelocity(t);
-			Robot.drivetrain.drive(leftSpeed, rightSpeed);
+			Robot.drivetrain.drive(mp.getVelocity(t), 0);
 			
-			if (t == finishTime)
-				setState(0);
+			if (isFinished())
+				setState(STOP);
 			
 			break;
 			
@@ -52,7 +49,7 @@ public class Line extends StateMachineBase {
 	}
 	
 	public boolean isFinished() {
-		return t >= finishTime;
+		return t >= mp.totalTime;
 	}
 
 }

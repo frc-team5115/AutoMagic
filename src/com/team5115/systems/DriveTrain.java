@@ -18,6 +18,8 @@ public class DriveTrain {
 	CANTalon frontright;
 	CANTalon backleft;
 	CANTalon backright;
+
+	double kv = 0.1;
 	
 	public DriveTrain() {
 		frontleft = new CANTalon(Constants.FRONT_LEFT_MOTOR_ID);
@@ -35,14 +37,19 @@ public class DriveTrain {
 	
 	/**
 	 * Sets the values sent to the motor controllers on each side. Values should range [-1, 1].<br>
-	 * <b>Do not call from anywhere except DriveTrainManager!</b><br>
-	 * Seriously, it'll screw up the PID loop.
 	 * @param leftSpeed
 	 * @param rightSpeed
 	 */
-	public void drive(double leftSpeed, double rightSpeed) {
+	public void driveRaw(double leftPower, double rightPower) {
 		frontleft.set(leftSpeed);
 		frontright.set(rightSpeed);
+	}
+
+	public void drive(double forward, double turn) {
+		double leftSpeed = forward + turn * Constants.ROBOT_RADIUS;
+		double rightSpeed = forward - turn * Constants.ROBOT_RADIUS;
+		
+		driveRaw(leftSpeed * kv, rightSpeed * kv);
 	}
 	
 	/**

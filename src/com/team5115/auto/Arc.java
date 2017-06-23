@@ -21,17 +21,19 @@ public class Arc extends StateMachineBase {
 	double leftSpeed;
 	double rightSpeed;
 	
-	public Arc(double v_start, double v_max, double v_end, double accel, double angle, double radius) {
-		double leftDist = (radius + Constants.ROBOT_RADIUS) * Math.toRadians(angle);
-		double rightDist = (radius - Constants.ROBOT_RADIUS) * Math.toRadians(angle);
-		
-		rightLeftRatio = rightDist / leftDist;
-		
-		mp = new MotionProfile(v_start, v_max, v_end, accel, leftDist);
+	public Arc(double v_start, double v_max, double v_max_angular, double v_end, double accel, double angle, double radius) {
+		double dist_forward = radius * Math.toRadians(angle);
+
+		// Calculate the turn values like normal
+		double dist_turn = Constants.ROBOT_RADIUS * Math.toRadians(angle);
+		double v_max_turn = Constants.ROBOT_RADIUS * v_max_angular;
+
+		mpForward = new MotionProfile(v_start, v_max, v_end, accel, dist_forward);
+		mpTurn = new MotionProfile(0, v_max_turn, 0, accel, dist_turn);
 	}
 	
 	public void setState(int s) {
-		switch (state) {
+		switch (s) {
 		case DRIVING:
 			
 			startTime = Timer.getFPGATimestamp();
@@ -47,9 +49,7 @@ public class Arc extends StateMachineBase {
 		case DRIVING:
 			
 			t = Timer.getFPGATimestamp() - startTime;
-			leftSpeed = mp.getVelocity(t);
-			rightSpeed = leftSpeed * rightLeftRatio;
-			Robot.drivetrain.drive(leftSpeed, rightSpeed);
+			Robot.drivetrain.drive(mpForward.getVelocity(t), mpTurn.getVelocity(t));
 			
 			if (t == finishTime)
 				setState(0);

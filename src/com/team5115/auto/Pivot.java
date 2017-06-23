@@ -20,16 +20,15 @@ public class Pivot extends StateMachineBase {
 	double rightSpeed;
 	
 	public Pivot(double v_start, double v_max, double v_end, double accel, double angle) {
-		double dist = Constants.ROBOT_RADIUS * Math.toRadians(angle);
-		mp = new MotionProfile(v_start, v_max, v_end, accel, dist);
+		double dist_turn = Constants.ROBOT_RADIUS * Math.toRadians(angle);
+		mp = new MotionProfile(v_start, v_max, v_end, accel, dist_turn);
 	}
 	
 	public void setState(int s) {
-		switch (state) {
+		switch (s) {
 		case DRIVING:
 			
 			startTime = Timer.getFPGATimestamp();
-			finishTime = mp.totalTime();
 			
 		}
 		
@@ -41,12 +40,10 @@ public class Pivot extends StateMachineBase {
 		case DRIVING:
 			
 			t = Timer.getFPGATimestamp() - startTime;
-			leftSpeed = mp.getVelocity(t);
-			rightSpeed = -mp.getVelocity(t);
-			Robot.drivetrain.drive(leftSpeed, rightSpeed);
+			Robot.drivetrain.drive(0, mp.getVelocity(t));
 			
-			if (t == finishTime)
-				setState(0);
+			if (isFinished())
+				setState(STOP);
 			
 			break;
 			
@@ -54,7 +51,7 @@ public class Pivot extends StateMachineBase {
 	}
 	
 	public boolean isFinished() {
-		return t >= finishTime;
+		return t >= mp.totalTime;
 	}
 
 }
