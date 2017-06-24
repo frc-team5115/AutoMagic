@@ -49,7 +49,7 @@ public class Line extends StateMachineBase {
 	}
 
 	public boolean isFinished() {
-		return t >= mp.totalTime;
+		return t >= mp.totalTime();
 	}
 
 }

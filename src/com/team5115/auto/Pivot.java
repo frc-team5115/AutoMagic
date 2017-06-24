@@ -51,7 +51,7 @@ public class Pivot extends StateMachineBase {
 	}
 
 	public boolean isFinished() {
-		return t >= mp.totalTime;
+		return t >= mp.totalTime();
 	}
 
 }
