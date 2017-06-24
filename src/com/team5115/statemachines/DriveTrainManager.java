@@ -10,27 +10,27 @@ import com.team5115.robot.Robot;
  *
  */
 public class DriveTrainManager extends StateMachineBase {
-	
+
 	public static final int DRIVING = 1;
-	
+
 	double leftSpeed = 0;
 	double rightSpeed = 0;
 	double v_left;
 	double v_right;
-	
+
 	PID pidLeft;
 	PID pidRight;
-	
+
 	double kf = 0.1;
 	double kp = 0.04;
 	double ki = 1.5;
 	double kd = 0;
-	
+
 	public DriveTrainManager() {
 		pidLeft = new PID(kp, ki, kd);
 		pidRight = new PID(kp, ki, kd);
 	}
-	
+
 	/**
 	 * Sets the left and right speed of the drivetrain, in ft/s.
 	 * @param left
@@ -40,18 +40,18 @@ public class DriveTrainManager extends StateMachineBase {
 		leftSpeed = left;
 		rightSpeed = right;
 	}
-	
+
 	public void update() {
 		switch(state) {
 		case DRIVING:
-			
+
 			v_left = kf * leftSpeed + pidLeft.getPID(leftSpeed, Robot.drivetrain.leftSpeed());
 			v_right = kf * rightSpeed + pidRight.getPID(rightSpeed, Robot.drivetrain.rightSpeed());
-			
+
 			Robot.drivetrain.drive(v_left, v_right);
-			
+
 			break;
-			
+
 		}
 	}
 

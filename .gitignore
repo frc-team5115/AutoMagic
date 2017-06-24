@@ -1,4 +1,10 @@
+# java files
 *.class
 .project
 .classpath
 *.jar
+
+# vim files
+*~
+*.swp
+*.swo

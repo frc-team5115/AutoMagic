@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj.Timer;
 public class Robot extends IterativeRobot {
 
 	public static DriveTrain drivetrain;
-	
+
 	public static DriveTrainManager dtm;
 
 	public void robotInit() {
 		drivetrain = new DriveTrain();
-		
+
 		dtm = new DriveTrainManager();
 	}
 
@@ -26,7 +26,7 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousPeriodic() {
 		dtm.update();
-		
+
 		Timer.delay(Constants.DELAY);
 	}
 
@@ -36,7 +36,7 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 		dtm.update();
-		
+
 		Timer.delay(Constants.DELAY);
 	}
 

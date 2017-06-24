@@ -11,16 +11,16 @@ import edu.wpi.first.wpilibj.CANTalon;
  *
  */
 public class DriveTrain {
-	
+
 	public boolean inuse;
-	
+
 	CANTalon frontleft;
 	CANTalon frontright;
 	CANTalon backleft;
 	CANTalon backright;
 
 	double kv = 0.1;
-	
+
 	public DriveTrain() {
 		frontleft = new CANTalon(Constants.FRONT_LEFT_MOTOR_ID);
 		frontright = new CANTalon(Constants.FRONT_RIGHT_MOTOR_ID);
@@ -31,10 +31,10 @@ public class DriveTrain {
 		backright.changeControlMode(CANTalon.TalonControlMode.Follower);
 		backleft.set(frontleft.getDeviceID());
 		backright.set(frontright.getDeviceID());
-		
+
 		frontright.setInverted(true);
 	}
-	
+
 	/**
 	 * Sets the values sent to the motor controllers on each side. Values should range [-1, 1].<br>
 	 * @param leftSpeed
@@ -48,10 +48,10 @@ public class DriveTrain {
 	public void drive(double forward, double turn) {
 		double leftSpeed = forward + turn * Constants.ROBOT_RADIUS;
 		double rightSpeed = forward - turn * Constants.ROBOT_RADIUS;
-		
+
 		driveRaw(leftSpeed * kv, rightSpeed * kv);
 	}
-	
+
 	/**
 	 * Speed of left wheels in ft/s.
 	 * @return speed
@@ -60,7 +60,7 @@ public class DriveTrain {
 		double rawSpeed = frontleft.getSpeed();
 		return (rawSpeed * Constants.WHEEL_DIAMETER * Math.PI * 10) / (1440 * 12);
 	}
-	
+
 	/**
 	 * Speed of right wheels in ft/s.
 	 * @return speed
