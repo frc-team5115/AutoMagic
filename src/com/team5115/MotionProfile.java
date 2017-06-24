@@ -55,7 +55,7 @@ public class MotionProfile {
 		// calculate v_max with magic
 		vmax = (t - Math.sqrt(Math.pow(t, 2) - 4 * dist / a)) * a / 2;
 
-		MotionProfile(0, vmax, 0, a, dist);
+		this(0, vmax, 0, a, dist);
 	}
 
 	public double getVelocity(double t) {
