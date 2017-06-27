@@ -22,13 +22,18 @@ public class Arc extends StateMachineBase {
 	double rightSpeed;
 
 	public Arc(double v_start, double v_max, double v_end, double accel, double angle, double radius) {
-		double dist_forward = radius * Math.toRadians(angle);
+		// Calculate forward distance and linear distance of the turn
+		double distForward = radius * Math.toRadians(angle);
+		double distTurn = Constants.ROBOT_RADIUS * Math.toRadians(angle);
 
-		// Calculate the turn values like normal
-		double dist_turn = Constants.ROBOT_RADIUS * Math.toRadians(angle);
-
-		mpForward = new MotionProfile(v_start, v_max, v_end, accel, dist_forward);
-		mpTurn = new MotionProfile(accel, dist_turn, mpForward.totalTime());
+		// Check if turn or forward motion is longer. Use longer one to set the time of the other
+		if (distForward > distTurn) {
+			mpForward = new MotionProfile(v_start, v_max, v_end, accel, distForward);
+			mpTurn = new MotionProfile(accel, distTurn, mpForward.totalTime());
+		} else {
+			mpTurn = new MotionProfile(0, v_max, 0, accel, distTurn);
+			mpForward = new MotionProfile(accel, distForward, mpTurn.totalTime());
+		}
 	}
 
 	public void setState(int s) {
