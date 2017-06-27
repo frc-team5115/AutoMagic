@@ -15,9 +15,6 @@ public class Pivot extends StateMachineBase {
 
 	double t;
 	double startTime;
-	double finishTime;
-	double leftSpeed;
-	double rightSpeed;
 
 	public Pivot(double v_start, double v_max, double v_end, double accel, double angle) {
 		double dist_turn = Constants.ROBOT_RADIUS * Math.toRadians(angle);

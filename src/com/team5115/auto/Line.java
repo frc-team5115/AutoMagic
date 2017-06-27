@@ -14,9 +14,6 @@ public class Line extends StateMachineBase {
 
 	double t;
 	double startTime;
-	double finishTime;
-	double leftSpeed;
-	double rightSpeed;
 
 	public Line(double v_start, double v_max, double v_end, double accel, double dist) {
 		mp = new MotionProfile(v_start, v_max, v_end, accel, dist);

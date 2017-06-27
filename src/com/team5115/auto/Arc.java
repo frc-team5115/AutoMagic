@@ -13,13 +13,8 @@ public class Arc extends StateMachineBase {
 
 	MotionProfile mp;
 
-	double rightLeftRatio;
-
 	double t;
 	double startTime;
-	double finishTime;
-	double leftSpeed;
-	double rightSpeed;
 
 	public Arc(double v_start, double v_max, double v_end, double accel, double angle, double radius) {
 		// Calculate forward distance and linear distance of the turn
