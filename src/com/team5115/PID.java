@@ -10,34 +10,41 @@ public class PID {
 
 	double kp, ki, kd;
 
-	double active_range = 0;
+	double maxOutput;
 
-	public PID(double p, double i, double d) {
+	public PID(double p, double i, double d, double max) {
 		kp = p;
 		ki = i;
 		kd = d;
+		maxOutput = max;
 	}
 
-	public void setActiveRange(double r) {
-		active_range = r;
+	public PID(double p, double i, double d) {
+		this(p, i, d, 1);
 	}
 
 	public double getPID(double setpoint, double actual) {
-		output = 0;
-
 		error = setpoint - actual;
 
-		if (Math.abs(error) < active_range || active_range == 0) {
+		// calculate derivative
+		if (last_error != 0)
+			derror = (error - last_error) / Constants.DELAY;
+		else
+			derror = 0;
+
+		last_error = error;
+
+		// calculate output
+		output = kp * error + ki * error_accum + kd * derror;
+
+		// make sure output does not exceed max, and don't integrate if it does
+		// not integrating helps prevent overshooting
+		if (output > maxOutput) {
+			output = maxOutput;
+		} else if (output < -maxOutput) {
+			output = -maxOutput;
+		} else {
 			error_accum += error * Constants.DELAY;
-
-			if (last_error != 0)
-				derror = (error - last_error) / Constants.DELAY;
-			else
-				derror = 0;
-
-			last_error = error;
-
-			output = kp * error + ki * error_accum + kd * derror;
 		}
 
 		return output;
