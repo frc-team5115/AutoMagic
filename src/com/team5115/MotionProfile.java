@@ -53,9 +53,7 @@ public class MotionProfile {
 	// Profile based on time and distance (start and end velocity is 0, used for turning in arcs)
 	public MotionProfile(double a, double dist, double t) {
 		// calculate v_max with magic
-		vmax = (t - Math.sqrt(Math.pow(t, 2) - 4 * dist / a)) * a / 2;
-
-		this(0, vmax, 0, a, dist);
+		this(0, (t - Math.sqrt(Math.pow(t, 2) - 4 * dist / a)) * a / 2, 0, a, dist);
 	}
 
 	public double getVelocity(double t) {

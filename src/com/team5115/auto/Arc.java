@@ -11,7 +11,8 @@ public class Arc extends StateMachineBase {
 
 	public static final int DRIVING = 1;
 
-	MotionProfile mp;
+	MotionProfile mpForward;
+	MotionProfile mpTurn;
 
 	double t;
 	double startTime;
@@ -49,7 +50,7 @@ public class Arc extends StateMachineBase {
 			t = Timer.getFPGATimestamp() - startTime;
 			Robot.drivetrain.drive(mpForward.getVelocity(t), mpTurn.getVelocity(t));
 
-			if (t == finishTime)
+			if (isFinished())
 				setState(0);
 
 			break;

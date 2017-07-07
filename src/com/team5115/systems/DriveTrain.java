@@ -41,8 +41,8 @@ public class DriveTrain {
 	 * @param rightSpeed
 	 */
 	public void driveRaw(double leftPower, double rightPower) {
-		frontleft.set(leftSpeed);
-		frontright.set(rightSpeed);
+		frontleft.set(leftPower);
+		frontright.set(rightPower);
 	}
 
 	public void drive(double forward, double turn) {
